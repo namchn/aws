@@ -1,12 +1,12 @@
 #aws
 
-1.aws elastic beans talk 적용
+1.AWS elastic beans talk 적용
 ---------------------------
 
 2.백엔드 서버 구현 : spring boot
 ---------------------------
 
-----레이어 아키텍처 구조----
+  ---레이어 아키텍처 구조----
   
   model (entity)
   
