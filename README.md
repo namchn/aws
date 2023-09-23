@@ -1,4 +1,3 @@
-#aws
 
 1.AWS elastic beans talk 적용
 ---------------------------
