@@ -1,0 +1,137 @@
+ymlconfig:
+  jwt:
+    token: 
+      secret: 
+       key: FlRpX30pMqDbiAkmlfArbrmVkDD4RqISskGZmBFax5oGVxzXXWUzTR5JyskiHMIV9M1Oicegkpi46AdvrcX1E6CmTUBc6IFbTPiD
+
+  environment:
+    execution:
+      mode: local    #### dev  prod
+      #mode: dev 
+      #mode: prod 
+      
+    url:
+      backend: http://localhost:8080
+      frontend: http://localhost:3000
+      
+    # 결제 반환 주소     
+    pay:
+      order: 
+        cid: TC0ONETIME
+        partner_user_id: nc2030
+        approval_url: http://localhost:8080/pay/completed
+        cancel_url: http://localhost:3000/pay/cancel
+        fail_url: http://localhost:3000/pay/fail
+        login_uri: http://localhost:3000/login
+        basket_uri: http://localhost:3000/basketList
+          
+      
+###########  위쪽은 개발중인 설정값 
+
+######################################  
+#server 관련    
+######################################        
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 30m
+  # access log    
+  tomcat:
+    #basedir: .                            # access log를 저장할 base directory 지정
+    accesslog:
+      enabled: true  
+      max-days: 90                          # 최대 로그를 x일 까지 저장하고 그 이상 오래된 로그는 삭제를 할지 설정, 기본값이 -1 (삭제하지 않음)로 되어 있음
+      directory: D:/logs/todo                       # access log를 저장할 상세 directory (base directory에 기반한) (default: logs)  로그가 저장될 경로설정으로 절대 및 상대 경로로 설정할 수 있고, 상대경로로 설정을 하려면 tomcat.basedir도 세팅
+      pattern: '%h %l %u [%{yy-MM-dd:HH:mm:ss}t] "%r" %s %b %D [ref]:%{Referer}i %{User-Agent}i'   # access log 출력 패턴 '%h %l %u %t "%r" %s %b %D'
+      prefix: access_log                        # access log 파일이름 prefix
+      suffix: .log                          # access log 파일이름 suffix (확장자 포함)
+      rotate: true                          # 일정 시간 간격으로 새로운 파일로 저장할지 설정하는 값으로 기본 값이 true라서 별도 설정은 필요없고, 만약 파일 1개에 계속 로그를 쌓고 싶으면 false로 설정
+      #rename-on-rotate: true                # rotation 시, 새로운 이름 지정 여부 (rotate 될 때의 날짜명이 로그 파일이름에 찍힘)
+      #encoding : UTF-8 #인코딩은 기본 시스템의 인코딩을 따르기 때문에 수정이 필요한 경우에만 설정
+      #buffered :true                      # request가 종료되는 즉시 로그를 작성할지, 버퍼를 두고 여러개를 한번에 작성할지 설정 (기본 값은 false로 버퍼를 두고 작성)
+
+######################################  
+#spring 관련    
+######################################        
+spring:
+  #redis
+  redis:
+    host: redis-15535.c89.us-east-1-3.ec2.cloud.redislabs.com
+    port: 15535
+    username: default 
+    password: sXZJLRhSSYFDAHp3EWCGULKydrKCys6b
+  #mvc:
+    #view:
+      #prefix: /WEB-INF/jsp/
+      #suffix: .jsp
+  ############ test db########
+  jpa:
+    database: MYSQL
+    show-sql: true #콘솔에 로그가 나옴
+    format_sql : true #이쁘게 해줌
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update  # create :  로딩 시점에 테이블 다 드랍하고 새로시작, 끝나도 그대로 남아있음  
+  datasource:
+    url: jdbc:mysql://svc.sel3.cloudtype.app:32110/boot
+    username: root
+    password: 1234
+    #디비 종류  driver-class-name : org.h2.Driver  //com.mysql.cj.jdbc.Driver
+  # Run시 cache값을 사용하지 않겠다는 의미 (완벽하진 않지만 오류 방지)
+  thymeleaf:
+    cache: false 
+  ############ oauth2 관련 ########
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: 5ee37996fdca294f82c3
+            clientSecret: 2c3fae4d2c197448f4fc594f383a86e5d22f9fd0
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - user:email
+              - read:user
+    provider:
+      github:
+        authorization-uri: https://github.com/login/oauth/authorize
+        token-uri: https://github.com/login/oauth/access_token
+        user-info-uri: https://api.github.com/user
+
+######################################  
+#로그 관련    
+######################################  
+logging:
+  pattern:
+    #file: '[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n'
+    #rolling-file-name:  'spring.%d{yyyy-MM-dd}.%i' # 'D:/logs/todo/program/spring.%d{yyyy-MM-dd}.%i'
+    #console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg% 
+  level:
+    org.hibernate.SQL: info #콘솔에 남기는게 아니라 로그로 남음. # debug/info/warn
+    # root: info
+    #org.hibernate.type : trace #바인딩된 파라미터까지 볼 수 있   
+  file: # 로그 파일에 대한 명시입니다. 주의점 name과 path중 하나만 사용해야합니다. path 사용을 권장합니다.
+    name: D:/logs/todo/program/boot.log # 로그 파일의 이름
+    #path: D:/logs/todo/program/ # 로그 파일의 위치 절대 경로를 적어주시면 됩니다.  
+    max-size: 500MB
+    max-history: 1  # 몇일동안 남길건지
+  #logback:
+    #rollingpolicy:
+      #file-name-pattern : '${LOG_FILE}.%d{yyyy-MM-dd}_%i.zip' #'${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz'
+    
+
+######################################        
+##사용하기 위해서는 그래들 주입필요함.#########
+#implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+#implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'  
+############ mybatis 관련 #############    
+mybatis:
+  configuration:
+    multiple-result-sets-enabled: false
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true    
+    jdbc-type-for-null: varchar
+    default-fetch-size: 500
+  # resources/mapper/ 에 있는 모든 xml 파일
+  mapper-locations: mapper/**.xml   
