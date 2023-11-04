@@ -40,3 +40,15 @@ out/
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+##todo
+src/main/resources/*
+src/main/resources/application.yml.bak
+src/main/resources/application-dev.yml
+src/main/resources/application-prod.yml
+src/main/resources/config.properties
+src/main/resources/config.yaml
+
+
+##엘라스틱 키##
+todo.pem
